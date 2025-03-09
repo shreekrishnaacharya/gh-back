@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TaskService } from './service';
 import { TaskController } from './controller';
 import { TaskPriorityEnum, TaskStatusEnum } from '../common/enum/task.enum';
-import { TaskPage } from './dto/response.dto';
 import { ResponseStatusEnum } from '../common/enum/common.enum';
 import { NotFoundException } from '@nestjs/common';
 
@@ -22,7 +21,7 @@ const mockTaskService = {
   add: jest.fn((createDto) => Promise.resolve({ id: 1, ...createDto })),
   updateMany: jest.fn(),
   update: jest.fn((id, updateDto) =>
-    Promise.resolve({ ...mockTask, ...updateDto }),
+    Promise.resolve({ ...mockTask, ...updateDto, id }),
   ),
   deleteMany: jest.fn(),
   delete: jest.fn(),
