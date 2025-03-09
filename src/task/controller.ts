@@ -11,7 +11,7 @@ import {
 import { TaskService } from './service';
 import { SearchTaskDto } from './dto/search.task.dto';
 import { PageDto } from '../common/dto/page.dto';
-import { TaskPage } from './dto/response.dto';
+import { ResponseTaskDto, TaskPage } from './dto/response.dto';
 import { CreateTaskDto } from './dto/create.task.dto';
 import { ManyTaskDto } from './dto/many.task.dto';
 import { UpdateTaskDto } from './dto/update.task.dto';
@@ -28,6 +28,14 @@ export class TaskController {
     @Query() pageDto?: PageDto,
   ): Promise<TaskPage> {
     return this.taskService.getAll(pageDto, searchDto);
+  }
+
+  @Get('/:id')
+  getOne(
+    @Param('id') id: number,
+    @Query() searchDto?: SearchTaskDto,
+  ): Promise<ResponseTaskDto> {
+    return this.taskService.getById(id, searchDto);
   }
 
   @Post()

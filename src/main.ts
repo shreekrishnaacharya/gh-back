@@ -1,15 +1,24 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: '*', // Allow all origins
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: '*', // Allow all headers
-    credentials: false, // Set to true if cookies are required (not typical for "allow all")
+    allowedHeaders: '*',
+    credentials: false,
   });
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
   const config = new DocumentBuilder()
     .setTitle('Globally Hub - Task Managament')
     .setDescription('This is a task management assignment')

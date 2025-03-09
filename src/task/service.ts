@@ -1,5 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { findAllByPage, Page } from '@sksharma72000/nestjs-search-page';
+import {
+  findAllByPage,
+  findOne,
+  Page,
+} from '@sksharma72000/nestjs-search-page';
 import { PageDto } from '../common/dto/page.dto';
 import { Task } from '../entities/task.entity';
 import { FindOneOptions, In, Repository } from 'typeorm';
@@ -25,6 +29,18 @@ export class TaskService {
       page: pageable,
       queryDto: searchDto,
     });
+  }
+
+  async getById(id: number, searchDto: any): Promise<Task> {
+    const modal = await findOne<Task>({
+      id,
+      repo: this.taskRepo,
+      queryDto: searchDto,
+    });
+    if (!modal) {
+      throw new NotFoundException();
+    }
+    return modal;
   }
 
   async add(createDto: CreateTaskDto): Promise<Task> {

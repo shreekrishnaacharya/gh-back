@@ -10,7 +10,7 @@ export class Task extends BaseEntity {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'datetime', })
   due_date: Date;
 
   @Column({
