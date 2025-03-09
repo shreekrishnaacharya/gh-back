@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { findAllByPage, Page } from '@sksharma72000/nestjs-search-page';
-import { PageDto } from 'src/common/dto/page.dto';
-import { Task } from 'src/entities/task.entity';
-import { FindOneOptions, FindOptions, In, Repository } from 'typeorm';
+import { PageDto } from '../common/dto/page.dto';
+import { Task } from '../entities/task.entity';
+import { FindOneOptions, In, Repository } from 'typeorm';
 import { SearchTaskDto } from './dto/search.task.dto';
 import { CreateTaskDto } from './dto/create.task.dto';
 import { UpdateTaskDto } from './dto/update.task.dto';
@@ -64,19 +64,21 @@ export class TaskService {
     return this.taskRepo.save(update);
   }
 
-  async updateMany(manyTasks: ManyTaskDto): Promise<void> {
-    console.log(manyTasks)
+  async updateMany(manyTasks: ManyTaskDto): Promise<boolean> {
     const entities = manyTasks.tasks.map((task) => this.taskRepo.create(task));
     await this.taskRepo.save(entities);
+    return true;
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: number): Promise<boolean> {
     const entity = await this.findById(id);
     await this.taskRepo.remove(entity);
+    return true;
   }
 
-  async deleteMany(manyTasks: ManyTaskDto): Promise<void> {
+  async deleteMany(manyTasks: ManyTaskDto): Promise<boolean> {
     const entity = await this.findMany(manyTasks.tasks.map((task) => task.id));
     await this.taskRepo.remove(entity);
+    return true;
   }
 }

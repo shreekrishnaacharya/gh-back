@@ -7,5 +7,5 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
   @Type(() => Number)
   @IsNumber()
   @IsOptional()
-  id: number;
+  id?: number;
 }

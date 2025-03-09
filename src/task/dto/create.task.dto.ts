@@ -8,7 +8,7 @@ import {
   IsDate,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { TaskPriorityEnum, TaskStatusEnum } from 'src/common/enum/task.enum';
+import { TaskPriorityEnum, TaskStatusEnum } from '../../common/enum/task.enum';
 
 export class CreateTaskDto {
   @ApiProperty({ example: 'Complete project report', maxLength: 500 })

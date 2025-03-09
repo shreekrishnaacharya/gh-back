@@ -5,7 +5,7 @@ import {
   MaxLength,
   IsDate,
 } from 'class-validator';
-import { TaskPriorityEnum, TaskStatusEnum } from 'src/common/enum/task.enum';
+import { TaskPriorityEnum, TaskStatusEnum } from '../../common/enum/task.enum';
 import { Type } from 'class-transformer';
 import { PageSearch } from '@sksharma72000/nestjs-search-page';
 import { ApiProperty } from '@nestjs/swagger';

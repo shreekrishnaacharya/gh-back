@@ -10,11 +10,13 @@ import {
 } from '@nestjs/common';
 import { TaskService } from './service';
 import { SearchTaskDto } from './dto/search.task.dto';
-import { PageDto } from 'src/common/dto/page.dto';
+import { PageDto } from '../common/dto/page.dto';
 import { TaskPage } from './dto/response.dto';
 import { CreateTaskDto } from './dto/create.task.dto';
 import { ManyTaskDto } from './dto/many.task.dto';
 import { UpdateTaskDto } from './dto/update.task.dto';
+import { ResponseMessage } from '../common/dto/message.dto';
+import { ResponseStatusEnum } from '../common/enum/common.enum';
 
 @Controller('/tasks')
 export class TaskController {
@@ -22,8 +24,8 @@ export class TaskController {
 
   @Get()
   getAll(
-    @Query() pageDto: PageDto,
-    @Query() searchDto: SearchTaskDto,
+    @Query() searchDto?: SearchTaskDto,
+    @Query() pageDto?: PageDto,
   ): Promise<TaskPage> {
     return this.taskService.getAll(pageDto, searchDto);
   }
@@ -34,8 +36,12 @@ export class TaskController {
   }
 
   @Patch('/updateMany')
-  updateMany(@Body() updateMany: ManyTaskDto) {
-    return this.taskService.updateMany(updateMany);
+  async updateMany(@Body() updateMany: ManyTaskDto): Promise<ResponseMessage> {
+    await this.taskService.updateMany(updateMany);
+    return {
+      message: 'Update many success',
+      status: ResponseStatusEnum.SUCCESS,
+    };
   }
 
   @Patch('/:id')
@@ -44,12 +50,20 @@ export class TaskController {
   }
 
   @Delete('/deleteMany')
-  deleteMany(@Body() manyDto: ManyTaskDto) {
-    return this.taskService.deleteMany(manyDto);
+  async deleteMany(@Body() manyDto: ManyTaskDto): Promise<ResponseMessage> {
+    await this.taskService.deleteMany(manyDto);
+    return {
+      message: 'Delete many success',
+      status: ResponseStatusEnum.SUCCESS,
+    };
   }
 
   @Delete('/:id')
-  delete(@Param('id') id: number) {
-    return this.taskService.delete(id);
+  async delete(@Param('id') id: number): Promise<ResponseMessage> {
+    await this.taskService.delete(id);
+    return {
+      message: 'Delete success',
+      status: ResponseStatusEnum.SUCCESS,
+    };
   }
 }

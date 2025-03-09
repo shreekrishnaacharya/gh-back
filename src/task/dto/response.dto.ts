@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Page } from '@sksharma72000/nestjs-search-page';
-import { TaskPriorityEnum, TaskStatusEnum } from 'src/common/enum/task.enum';
+import { TaskPriorityEnum, TaskStatusEnum } from '../../common/enum/task.enum';
 
 export class ResponseTaskDto {
   @ApiProperty({ example: 'Complete project report' })

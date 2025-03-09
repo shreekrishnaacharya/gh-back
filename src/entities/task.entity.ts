@@ -1,6 +1,6 @@
 import { Entity, Column } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { TaskPriorityEnum, TaskStatusEnum } from 'src/common/enum/task.enum';
+import { TaskPriorityEnum, TaskStatusEnum } from '../common/enum/task.enum';
 
 @Entity({ name: 'tasks' })
 export class Task extends BaseEntity {
