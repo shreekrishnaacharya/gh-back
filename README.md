@@ -180,6 +180,14 @@ The application was developed with the following challenges in mind:
 - **Security**: The application was designed to be secure, with secure password hashing and protected endpoints.
 - **Scalability**: The application was designed to be scalable, with a modular architecture that allows for the easy addition of new features.
 
+
+## Live application
+
+Application is hosted live on cpanel at http://task-api.krishna-acharya.com.np/
+Swagger file can ba accessed at http://task-api.krishna-acharya.com.np/api
+
+Client application, ie frontend react app, can be accessed at http://task.krishna-acharya.com.np
+
 ## License
 
 This project is licensed under the MIT License.
