@@ -177,7 +177,6 @@ The application was developed using the following technologies:
 The application was developed with the following challenges in mind:
 
 - **Performance**: The application was designed to be performant, with optimized database queries and efficient processing of requests.
-- **Security**: The application was designed to be secure, with secure password hashing and protected endpoints.
 - **Scalability**: The application was designed to be scalable, with a modular architecture that allows for the easy addition of new features.
 
 
