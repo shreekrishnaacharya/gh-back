@@ -49,7 +49,6 @@ export class SearchTaskDto {
     type: 'enum',
     enum: TaskPriorityEnum,
   })
-  @IsEnum(TaskPriorityEnum)
   @IsOptional()
   @PageSearch({ operator: 'and', operation: 'in' })
   priority?: TaskPriorityEnum;

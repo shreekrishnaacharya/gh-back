@@ -9,6 +9,9 @@ import { TaskModule } from '../src/task/module';
 import { CreateTaskDto } from '../src/task/dto/create.task.dto';
 import { TaskPriorityEnum, TaskStatusEnum } from '../src/common/enum/task.enum';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import * as dotenv from 'dotenv';
+
+dotenv.config({ path: '.env.test' });
 
 describe('TaskController (Integration)', () => {
   let app: INestApplication;
@@ -17,31 +20,16 @@ describe('TaskController (Integration)', () => {
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
-        // TypeOrmModule.forRootAsync({
-        //   imports: [ConfigModule],
-        //   inject: [ConfigService],
-        //   useFactory: (configService: ConfigService) => ({
-        //     type: 'mysql',
-        //     host: configService.get('TDB_HOST'),
-        //     port: parseInt(configService.get('TDB_USER'), 10),
-        //     username: configService.get('TDB_USER'),
-        //     password: configService.get('TDB_PASSWORD'),
-        //     database: configService.get('TDB_NAME'),
-        //     entities: [Task],
-        //     synchronize: true,
-        //     logging: false,
-        //   }),
-        // }),
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule],
           inject: [ConfigService],
           useFactory: (configService: ConfigService) => ({
             type: 'mysql',
-            host: 'localhost',
-            port: 3306,
-            username: 'root2',
-            password: 'kamal12345',
-            database: 'ghtask_test',
+            host: configService.get('DB_HOST'),
+            port: parseInt(configService.get('DB_USER'), 10),
+            username: configService.get('DB_USER'),
+            password: configService.get('DB_PASSWORD'),
+            database: configService.get('DB_NAME'),
             entities: [Task],
             synchronize: true,
             logging: false,
@@ -56,7 +44,6 @@ describe('TaskController (Integration)', () => {
       new ValidationPipe({
         whitelist: true,
         transform: true,
-        forbidNonWhitelisted: true,
       }),
     );
     await app.init();

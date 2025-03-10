@@ -27,7 +27,7 @@ export class TaskController {
     @Query() searchDto?: SearchTaskDto,
     @Query() pageDto?: PageDto,
   ): Promise<TaskPage> {
-    return this.taskService.getAll(pageDto, searchDto);
+    return this.taskService.getAll(searchDto, pageDto);
   }
 
   @Get('/:id')

@@ -21,8 +21,8 @@ export class TaskService {
   ) {}
 
   async getAll(
-    pageable: PageDto,
     searchDto: SearchTaskDto,
+    pageable: PageDto,
   ): Promise<Page<Task>> {
     return findAllByPage({
       repo: this.taskRepo,
