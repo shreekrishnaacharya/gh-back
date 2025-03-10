@@ -104,6 +104,11 @@ The [@sksharma72000/nestjs-search-page](https://github.com/shreekrishnaacharya/n
 - **Pagination**: Automatically handle paginated responses for large datasets.
 - **Filtering**: Apply filters to the queries based on request parameters.
 - **Integration**: Seamlessly integrates with NestJS and TypeORM.
+  
+### Repo and links
+Github : [https://github.com/shreekrishnaacharya/nestjs-search-page](https://github.com/shreekrishnaacharya/nestjs-search-page)
+
+Medium :[https://medium.com/towardsdev/simplify-your-nestjs-database-searches-with-nestjs-search-page-d2423ca8ba74](https://medium.com/towardsdev/simplify-your-nestjs-database-searches-with-nestjs-search-page-d2423ca8ba74)
 
 ### Example Usage
 
