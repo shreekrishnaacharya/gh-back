@@ -1,99 +1,185 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Task Management Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is the backend service for the Task Management application. It is built using NestJS and provides APIs for managing tasks, including creating, updating, deleting, and searching tasks. The backend also integrates with a MySQL database using TypeORM.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- Create, update, and delete tasks
+- Search tasks with pagination and filtering
+- Task prioritization and status management
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Technologies Used
 
-## Project setup
+- NestJS
+- TypeORM
+- MySQL
+- @nestjs/swagger for API documentation
+- @sksharma72000/nestjs-search-page for pagination and filtering
 
-```bash
-$ npm install
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm
+- MySQL database
+
+### Installation
+
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/shreekrishnaacharya/gh-back
+   cd gh-back
+   ```
+
+2. Install dependencies:
+
+   ```sh
+   npm install
+   ```
+
+3. Configure the database connection in the `database.module.ts` file.
+
+### Setting Up the Database
+
+- Create a new PostgreSQL database and update the connection details in the `.env` file.
+- Install the dependencies with `npm install`.
+- Set up the database by running `npm run db:setup`.
+
+### Setting Up the Environment
+
+- Create a `.env` file with the following variables:
+
+  - `DB_HOST`
+  - `DB_PORT`
+  - `DB_USER`
+  - `DB_PASSWORD`
+  - `DB_NAME`
+  - `PORT`
+  - `DB_SYNC`
+
+- Example .env
+
+  ```
+    DB_HOST=localhost
+    DB_NAME=ghtask
+    DB_PORT=3306
+    DB_USER=root
+    DB_PASSWORD=dbpassword
+    PORT=5000
+    DB_SYNC=true
+  ```
+
+### Running the Application
+
+- Start the application in development mode:
+
+  ```sh
+  npm run start:dev
+  ```
+
+- Build the application for production:
+
+  ```sh
+  npm run build
+  ```
+
+- Start the application in production mode:
+
+  ```sh
+  npm run start:prod
+  ```
+
+### API Documentation
+
+- API documentation is available via Swagger at `http://localhost:<port>/api`.
+
+## Using @sksharma72000/nestjs-search-page
+
+The [@sksharma72000/nestjs-search-page](https://github.com/shreekrishnaacharya/nestjs-search-page) package is used to simplify the implementation of pagination and filtering in the application. It provides decorators and utilities to easily manage paginated responses and apply filters based on query parameters.
+
+### Key Features
+
+- **Pagination**: Automatically handle paginated responses for large datasets.
+- **Filtering**: Apply filters to the queries based on request parameters.
+- **Integration**: Seamlessly integrates with NestJS and TypeORM.
+
+### Example Usage
+
+In your DTOs, use the `@PageSearch` decorator to specify which fields can be filtered:
+
+```typescript
+import { IsString, IsOptional } from 'class-validator';
+import { PageSearch } from '@sksharma72000/nestjs-search-page';
+
+export class SearchTaskDto {
+  @IsString()
+  @IsOptional()
+  @PageSearch()
+  title?: string;
+
+  @IsString()
+  @IsOptional()
+  @PageSearch()
+  description?: string;
+}
 ```
 
-## Compile and run the project
+In your service, utilize the `findAllByPage` method to handle paginated and filtered queries:
 
-```bash
-# development
-$ npm run start
+```typescript
+import { findAllByPage } from '@sksharma72000/nestjs-search-page';
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+@Injectable()
+export class TaskService {
+  async getAll(
+    searchDto: SearchTaskDto,
+    pageable: PageDto,
+  ): Promise<Page<Task>> {
+    return findAllByPage({
+      repo: this.taskRepo,
+      page: pageable,
+      queryDto: searchDto,
+    });
+  }
+}
 ```
 
-## Run tests
+### Testing
 
-```bash
-# unit tests
-$ npm run test
+- Unit tests are implemented using Jest and located in the `test` directory.
+- End-to-end tests are implemented using Jest and located in the `test` directory with the `*.e2e-spec.ts` extension.
+- When running end-to-end tests, a `.env.test` file is used to configure the application.
 
-# e2e tests
-$ npm run test:e2e
+## Architecture and Decisions
 
-# test coverage
-$ npm run test:cov
-```
+The application uses a single service, responsible for managing tasks. The service is built using NestJS, a TypeScript framework for building server-side applications. The service uses TypeORM for database operations and stores the data in a MySQL database. The application also uses the `@sksharma72000/nestjs-search-page` package to simplify the implementation of pagination and filtering.
 
-## Deployment
+The application uses a modular approach, with each feature being implemented as a separate module. The modules are organized by feature, with each feature having its own controller, service, repository, and dtos. The controllers are responsible for handling HTTP requests and responses, the services are responsible for implementing the business logic of the application, the repositories are responsible for interacting with the database, and dtos for validation user inputs and swagger documentation.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+The application also uses a number of other packages and libraries, such as `class-validator` and `class-transformer`, to validate and transform data.
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+The application was developed using the following architectural principles:
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+- **Separation of Concerns**: Each feature was implemented as a separate module, with each module being responsible for a specific feature.
+- **Modularity**: The application was built using a modular approach, with each module being a separate unit of code.
+- **Loose Coupling**: The modules were designed to be loosely coupled, with each module depending on as few other modules as possible.
+- **High Cohesion**: The modules were designed to have high cohesion, with each module being responsible for a single feature or set of related features.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+The application was developed using the following technologies:
 
-## Resources
+- **NestJS**: A TypeScript framework for building server-side applications.
+- **TypeORM**: An ORM for TypeScript and JavaScript.
+- **MySQL**: A relational database management system.
+- **@sksharma72000/nestjs-search-page**: A package for simplifying the implementation of pagination and filtering in NestJS applications.
 
-Check out a few resources that may come in handy when working with NestJS:
+The application was developed with the following challenges in mind:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **Performance**: The application was designed to be performant, with optimized database queries and efficient processing of requests.
+- **Security**: The application was designed to be secure, with secure password hashing and protected endpoints.
+- **Scalability**: The application was designed to be scalable, with a modular architecture that allows for the easy addition of new features.
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the MIT License.
